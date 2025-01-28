@@ -1,0 +1,44 @@
+<?xml version='1.0'?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+  <Product Id="*" Name="SampleApp" Language="1033" Version="1.0.0.0" Manufacturer="MyCompany" UpgradeCode="3cc427cc-2e65-4f69-8599-3203ac4db3d4">
+    <Package InstallerVersion="200" InstallPrivileges="elevated" Compressed="yes" InstallScope="perMachine" />
+    <Media Id="1" Cabinet="Project.cab" EmbedCab="yes" CompressionLevel="high" />
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="WINDOWSVOLUME">
+        <Directory Id="OPTLOCATION" Name="opt">
+          <Directory Id="PROJECTLOCATION" Name="sampleapp">
+            <Component Id="MainExecutable" Guid="29d874e5-87b5-497b-bf91-e8c6eecf9e5b">
+              <File Source="files/service.rb" KeyPath="yes" />
+              <ServiceControl Id="ServiceControlTestService" Name="testservice" Stop="uninstall" Remove="uninstall" />
+            </Component>
+            <Component Id="RegisterScript" Guid="fab88be1-1ede-4bde-a6f0-e74dd122e915">
+              <File Source="files/register.rb" KeyPath="yes" />
+            </Component>
+          </Directory>
+        </Directory>
+      </Directory>
+    </Directory>
+
+    <Feature Id="DefaultFeature" Level="1">
+      <ComponentRef Id="RegisterScript" />
+      <ComponentRef Id="MainExecutable" />
+    </Feature>
+
+    <Property Id="InstallService" Value=" "/>
+    <CustomAction Id="SetInstallServiceCommand"
+                  Property="InstallService"
+                  Value="&quot;C:\Ruby32-x64\bin\ruby.exe&quot; &quot;[PROJECTLOCATION]register.rb&quot;"/>
+    <CustomAction Id="InstallService"
+                  BinaryKey="WixCA"
+                  DllEntry="WixQuietExec64"
+                  Execute="deferred"
+                  Return="check"
+                  Impersonate="no" />
+
+    <InstallExecuteSequence>
+      <Custom Action="SetInstallServiceCommand" After="InstallFiles">NOT Installed</Custom>
+      <Custom Action="InstallService" After="SetInstallServiceCommand">NOT Installed</Custom>
+    </InstallExecuteSequence>
+  </Product>
+</Wix>
