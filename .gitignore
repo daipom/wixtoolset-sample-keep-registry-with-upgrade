@@ -1,3 +1,4 @@
 *.wixpdb
 *.wixobj
 *.msi
+*.log
