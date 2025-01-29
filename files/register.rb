@@ -1,6 +1,8 @@
 require "win32/service"
 require "win32/registry"
 
+p "register service"
+
 service_name = "testservice"
 # Specify ruby bin path
 ruby_path = "C:\\Ruby32-x64\\bin\\ruby.exe"

@@ -3,6 +3,7 @@
   <Product Id="*" Name="SampleApp" Language="1033" Version="1.0.0.0" Manufacturer="MyCompany" UpgradeCode="3cc427cc-2e65-4f69-8599-3203ac4db3d4">
     <Package InstallerVersion="200" InstallPrivileges="elevated" Compressed="yes" InstallScope="perMachine" />
     <Media Id="1" Cabinet="Project.cab" EmbedCab="yes" CompressionLevel="high" />
+    <MajorUpgrade DowngradeErrorMessage="DowngradeErrorMessage" />
 
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="WINDOWSVOLUME">
@@ -20,9 +21,38 @@
       </Directory>
     </Directory>
 
+    <Property Id="REGISTRY_START_OLD">
+        <RegistrySearch Id="RegistrySearchStart" Root="HKLM" Key="System\CurrentControlSet\Services\testservice" Name="Start" Type="raw" />
+    </Property>
+    <Property Id="REGISTRY_DELAYEDAUTOSTART_OLD">
+        <RegistrySearch Id="RegistrySearchDelayedAutostart" Root="HKLM" Key="System\CurrentControlSet\Services\testservice" Name="DelayedAutostart" Type="raw" />
+    </Property>
+    <Property Id="REGISTRY_OPTION_OLD">
+        <RegistrySearch Id="RegistrySearchOption" Root="HKLM" Key="System\CurrentControlSet\Services\testservice" Name="Option" Type="raw" />
+    </Property>
+
+    <ComponentGroup Id="ProductComponents" Directory="PROJECTLOCATION">
+      <!-- TODO Since these integer(DWORD) values have '#' prefix, we cannot write it as is -->
+      <!-- <Component Id="SetRegistryStart">
+        <Condition><![CDATA[REGISTRY_START_OLD<>""]]></Condition>
+        <RegistryValue Id="RegistryValueStart" Root="HKLM" Key="System\CurrentControlSet\Services\testservice" Name="Start" Value="[REGISTRY_START_OLD]" Type="integer" KeyPath="yes" />
+      </Component>
+      <Component Id="SetRegistryDelayedAutostart">
+        <Condition><![CDATA[REGISTRY_DELAYEDAUTOSTART_OLD<>""]]></Condition>
+        <RegistryValue Id="RegistryValueDelayedAutostart" Root="HKLM" Key="System\CurrentControlSet\Services\testservice" Name="DelayedAutostart" Value="[REGISTRY_DELAYEDAUTOSTART_OLD]" Type="integer" KeyPath="yes" />
+      </Component> -->
+      <Component Id="SetRegistryOption">
+        <Condition><![CDATA[REGISTRY_OPTION_OLD<>""]]></Condition>
+        <RegistryValue Id="RegistryValueOption" Root="HKLM" Key="System\CurrentControlSet\Services\testservice" Name="Option" Value="[REGISTRY_OPTION_OLD]" Type="string" KeyPath="yes" />
+      </Component>
+    </ComponentGroup>
+
     <Feature Id="DefaultFeature" Level="1">
       <ComponentRef Id="RegisterScript" />
       <ComponentRef Id="MainExecutable" />
+      <!-- <ComponentRef Id="SetRegistryStart" />
+      <ComponentRef Id="SetRegistryDelayedAutostart" /> -->
+      <ComponentRef Id="SetRegistryOption" />
     </Feature>
 
     <Property Id="InstallService" Value=" "/>
