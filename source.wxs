@@ -58,7 +58,7 @@
     <Property Id="InstallService" Value=" "/>
     <CustomAction Id="SetInstallServiceCommand"
                   Property="InstallService"
-                  Value="&quot;C:\Ruby32-x64\bin\ruby.exe&quot; &quot;[PROJECTLOCATION]register.rb&quot;"/>
+                  Value="&quot;C:\Ruby32-x64\bin\ruby.exe&quot; &quot;[PROJECTLOCATION]register.rb&quot; '[PROJECTLOCATION]'"/>
     <CustomAction Id="InstallService"
                   BinaryKey="WixCA"
                   DllEntry="WixQuietExec64"
