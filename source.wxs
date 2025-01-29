@@ -71,18 +71,23 @@
       </Component>
     </ComponentGroup>
 
-    <Feature Id="DefaultFeature" Level="1">
+    <Feature Id="DefaultFeature" Level="1" Title="SampleApp" Absent="disallow" ConfigurableDirectory="PROJECTLOCATION">
       <ComponentRef Id="RegisterScript" />
       <ComponentRef Id="MainExecutable" />
-      <ComponentRef Id="SetRegistryStartBoot" />
-      <ComponentRef Id="SetRegistryStartSystem" />
-      <ComponentRef Id="SetRegistryStartAutomatic" />
-      <ComponentRef Id="SetRegistryStartDemand" />
-      <ComponentRef Id="SetRegistryStartDisabled" />
-      <ComponentRef Id="SetRegistryDelayedAutostartDisabled" />
-      <ComponentRef Id="SetRegistryDelayedAutostartEnabled" />
-      <ComponentRef Id="SetRegistryOption" />
     </Feature>
+
+    <Feature Id="KeepRegistryFeature" Level="1" Title="Keep some registry values">
+      <ComponentGroupRef Id="ProductComponents" />
+    </Feature>
+
+    <Property Id="WIXUI_INSTALLDIR" Value="PROJECTLOCATION" />
+    <UIRef Id="ProjectUI_InstallDir"/>
+    <UI Id="ProjectUI_InstallDir">
+      <UIRef Id="WixUI_FeatureTree"/>
+      <TextStyle Id="WixUI_Font_Normal_White" FaceName="Tahoma" Size="8" Red="255" Green="255" Blue="255" />
+      <TextStyle Id="WixUI_Font_Bigger_White" FaceName="Tahoma" Size="12" Red="255" Green="255" Blue="255" />
+      <TextStyle Id="WixUI_Font_Title_White" FaceName="Tahoma" Size="9" Bold="yes" Red="255" Green="255" Blue="255" />
+    </UI>
 
     <Property Id="InstallService" Value=" "/>
     <CustomAction Id="SetInstallServiceCommand"
